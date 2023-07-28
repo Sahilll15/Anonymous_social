@@ -56,7 +56,7 @@ const loginUser = async (req, res) => {
         })
 
         if (!user) {
-            return res.status(400).json({ msg: "No account with this email has been registered" })
+            return res.status(400).json({ msg: "No account with this username does not exist!!" })
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
