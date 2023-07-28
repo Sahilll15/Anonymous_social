@@ -5,7 +5,7 @@ const createPost = async (req, res) => {
 
     try {
 
-        const author = req.user._id;
+        const author = req.user;
 
         const post = await new Post({
             content,
