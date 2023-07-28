@@ -5,11 +5,14 @@ const createPost = async (req, res) => {
 
     try {
 
-        const author = req.user;
+        const author = req.user._id;
+        console.log(author);
 
         const post = await new Post({
             content,
-            author
+            author,
+            authorname: req.user.username,
+
         })
         await post.save();
 
@@ -29,7 +32,8 @@ const createPost = async (req, res) => {
 const getPosts = async (req, res) => {
     try {
 
-        const posts = await Post.find({})
+        //get newer post first
+        const posts = await Post.find().sort({ createdAt: -1 });
         res.status(200).json({ posts: posts, mssg: "posts fetched succesfully" })
 
     } catch (error) {

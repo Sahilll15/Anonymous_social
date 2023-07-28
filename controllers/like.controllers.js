@@ -15,13 +15,13 @@ const likeDislikePost = async (req, res) => {
         console.log(user);
 
 
-        const like = await Like.findOne({ postId: postId, likedBy: req.user })
+        const like = await Like.findOne({ postId: postId, likedBy: req.user._id })
 
 
         if (!like) {
             const newLike = await Like.create({
                 postId: postId,
-                likedBy: req.user
+                likedBy: req.user._id
             })
             await newLike.save();
             return res.status(201).json({ msg: "Post liked", like: newLike })

@@ -12,9 +12,9 @@ module.exports.verifyJWT = async (req, res, next) => {
         }
         console.log('hi')
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        console.log(decoded.userId)
+        console.log(decoded)
 
-        req.user = decoded.userId
+        req.user = decoded.user;
         next()
     }
     catch (error) {
