@@ -11,15 +11,6 @@ const postSchema = mongoose.Schema({
         index: true
     }
     ,
-    images: {
-        type: [
-            {
-                url: String,
-                localPath: String,
-            }
-        ],
-        default: [],
-    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
