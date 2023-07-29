@@ -29,8 +29,10 @@ app.use('/api/v1/posts', postRoutes);
 app.use('/api/v1/likes', likeRoutes);
 app.use('/api/v1/comments', commentRoutes);
 
+app.set('view engine', 'ejs');
+
 
 app.get('/', (req, res) => {
-    res.send('Hello World')
-}
-)
+    res.render('index');
+});
+
