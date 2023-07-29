@@ -112,12 +112,15 @@ const updateavatar = async (req, res) => {
     }
 }
 
-
+const userInfo = async (req, res) => {
+    res.status(200).json({ message: 'Authentication successful', user: req.user });
+};
 
 
 
 module.exports = {
     registerUser,
     loginUser,
-    updateavatar
+    updateavatar,
+    userInfo
 }
