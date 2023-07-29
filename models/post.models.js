@@ -21,8 +21,33 @@ const postSchema = mongoose.Schema({
             type: String,
             required: true
         }
+    },
+    likes: {
+        type: Number,
+        default: 0
     }
+
+
+
 }, { timestamps: true });
+
+postSchema.pre('save', async function (next) {
+    const PostID = this._id;
+
+    const Like = require('../models/like.models');
+
+    try {
+
+        const likeCount = await Like.countDocuments({ PostID });
+        this.likes = likeCount;
+        next();
+
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+})
 
 const Post = mongoose.model("Post", postSchema);
 module.exports = Post;
+
