@@ -33,17 +33,20 @@ const createPost = async (req, res) => {
 
 const getPosts = async (req, res) => {
     try {
+        // Get newer posts first and populate the 'author' field
+        const posts = await Post.find().sort({ createdAt: -1 }).populate('author');
 
-        //get newer post first
-        const posts = await Post.find().sort({ createdAt: -1 });
-        res.status(200).json({ posts: posts, mssg: "posts fetched succesfully" })
+        // Filter out posts whose author doesn't exist in the users database
+        const validPosts = posts.filter(post => post.author && post.author.id);
 
+        res.status(200).json({ posts: validPosts, mssg: "Posts fetched successfully" });
     } catch (error) {
-        res.status(500).json({ error: error.message })
+        res.status(500).json({ error: error.message });
         console.log(error);
-
     }
 }
+
+
 
 const getPostById = async (req, res) => {
     const { id } = req.params;
