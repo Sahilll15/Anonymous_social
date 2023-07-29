@@ -10,9 +10,8 @@ module.exports.verifyJWT = async (req, res, next) => {
         if (!token) {
             return res.status(401).json({ msg: "No token, authorization denied" })
         }
-        console.log('hi')
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        console.log(decoded)
 
         req.user = decoded.user;
         next()

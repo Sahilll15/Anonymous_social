@@ -14,16 +14,16 @@ const likeSchema = new Schema(
             ref: "Post",
             default: null,
         },
-        likedBy: {
+        likedBy: [{
             type: mongoose.Types.ObjectId,
             required: true,
             ref: "User",
-
-        },
+        }],
     },
     { timestamps: true }
 );
 
-
 const Like = mongoose.model("Like", likeSchema);
 module.exports = Like;
+
+
