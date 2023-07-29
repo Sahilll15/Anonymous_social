@@ -10,9 +10,11 @@ const createPost = async (req, res) => {
 
         const post = await new Post({
             content,
-            author,
-            authorname: req.user.username,
-
+            author: {
+                id: author,
+                name: req.user.username,
+                avatar: req.user.avatar.url
+            }
         })
         await post.save();
 
