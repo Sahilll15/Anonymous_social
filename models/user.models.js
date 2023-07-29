@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
+const { Post } = require('../models/post.models')
 
 const avatarUrls = [
     "https://gravatar.com/avatar/ec1e4b6ce9dee173d688d4d768dbc689?s=400&d=robohash&r=x",
@@ -77,6 +79,15 @@ userSchema.pre('save', function (next) {
         next();
     })
 })
+
+userSchema.pre('remove', async function (next) {
+    const user = this;
+
+    // Assuming you have a separate schema for posts named "Post"
+    await Post.deleteMany({ user: user._id });
+
+    next();
+});
 
 
 const User = mongoose.model("User", userSchema);
