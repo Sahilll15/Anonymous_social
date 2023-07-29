@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
                 localPath: String,
             },
             default: {
-                url: "https://res.cloudinary.com/dq7l8216n/image/upload/v1628580000/avatars/default-avatar.png",
+                url: "https://gravatar.com/avatar/ec1e4b6ce9dee173d688d4d768dbc689?s=400&d=robohash&r=x",
                 localPath: "avatars/default-avatar.png",
             }
         },
@@ -32,7 +32,6 @@ const userSchema = new mongoose.Schema(
             minlength: [8, 'Password must be at least 8 characters long'],
 
         },
-
 
 
     },
