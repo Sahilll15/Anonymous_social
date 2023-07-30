@@ -67,7 +67,7 @@ const getCommentsBypostID = async (req, res) => {
 const deleteComment = async (req, res) => {
     const { commentID } = req.params;
     try {
-        const comment = await Comment.findById({ commentID });
+        const comment = await Comment.findById(commentID);
         if (!comment) {
             return res.status(400).json({ msg: "No comment found" })
         }
