@@ -64,8 +64,48 @@ const getCommentsBypostID = async (req, res) => {
     }
 }
 
+const deleteComment = async (req, res) => {
+    const { commentID } = req.params;
+    try {
+        const comment = await Comment.findById({ commentID });
+        if (!comment) {
+            return res.status(400).json({ msg: "No comment found" })
+        }
+        await Comment.findByIdAndDelete(commentID);
+        res.status(200).json({ msg: "Comment deleted" })
+
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message })
+        console.log(error);
+    }
+
+}
+
+const updateComment = async (req, res) => {
+    const { commentID } = req.params;
+    const { comment } = req.body;
+    try {
+        const commentt = await Comment.findById({ commentID });
+        if (!commentt) {
+            return res.status(400).json({ msg: "No comment found" })
+        }
+        await Comment.findByIdAndUpdate(commentID, {
+            comment: comment
+        });
+        await commentt.save();
+        res.status(200).json({ msg: "Comment updated" })
+
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message })
+        console.log(error);
+    }
+}
 
 module.exports = {
     Addcomment,
-    getCommentsBypostID
+    getCommentsBypostID,
+    deleteComment,
+    updateComment
 }
