@@ -159,9 +159,9 @@ const userFollowUnfollow = async (req, res) => {
         await followUser.save();
 
         if (isFollowing) {
-            res.status(200).json({ msg: 'unfollowed' });
+            res.status(200).json({ msg: 'unfollowed', followUser: followUser, currentUser: currentUser });
         } else {
-            res.status(200).json({ msg: 'followed' });
+            res.status(200).json({ msg: 'followed', followUser: followUser, currentUser: currentUser });
         }
 
     } catch (error) {
