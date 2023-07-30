@@ -1,4 +1,5 @@
-const Post = require('../models/post.models')
+const Post = require('../models/post.models');
+const User = require('../models/user.models');
 
 const createPost = async (req, res) => {
     const { content, tags } = req.body;
@@ -84,9 +85,31 @@ const deletePost = async (req, res) => {
     }
 }
 
+
+const getPostByUserId = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(400).json({ msg: "user not found" });
+        }
+
+        const posts = await Post.find({ "author.id": userId })
+            .sort({ createdAt: -1 })
+            .populate("author", "-password");
+
+        res.status(200).json({ posts: posts, mssg: "posts fetched successfully" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+        console.log(error);
+    }
+};
+
+
 module.exports = {
     createPost,
     getPosts,
     getPostById,
-    deletePost
+    deletePost,
+    getPostByUserId
 }
