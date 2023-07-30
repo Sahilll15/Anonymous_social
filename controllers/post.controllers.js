@@ -39,8 +39,9 @@ const getPosts = async (req, res) => {
 
         // Filter out posts whose author doesn't exist in the users database
         const validPosts = posts.filter(post => post.author && post.author.id);
+        const numberOfPosts = validPosts.length;
 
-        res.status(200).json({ posts: validPosts, mssg: "Posts fetched successfully" });
+        res.status(200).json({ posts: validPosts, mssg: "Posts fetched successfully", qty: numberOfPosts });
     } catch (error) {
         res.status(500).json({ error: error.message });
         console.log(error);
@@ -132,7 +133,9 @@ const getPostByUserId = async (req, res) => {
             .sort({ createdAt: -1 })
             .populate("author", "-password");
 
-        res.status(200).json({ posts: posts, mssg: "posts fetched successfully" });
+        const numberOfPosts = posts.length;
+
+        res.status(200).json({ posts: posts, mssg: "posts fetched successfully", qty: numberOfPosts });
     } catch (error) {
         res.status(500).json({ error: error.message });
         console.log(error);
