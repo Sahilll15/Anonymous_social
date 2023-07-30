@@ -126,7 +126,7 @@ const userProfile = async (req, res) => {
             return res.status(404).json({ msg: "No user with this ID" });
         }
 
-        res.status(200).json({ user });
+        res.status(200).json({ user: user, msg: 'success' });
     } catch (error) {
         res.status(500).json({ error: error.message });
         console.log(error);
