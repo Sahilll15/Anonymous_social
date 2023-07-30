@@ -90,11 +90,11 @@ const updateComment = async (req, res) => {
         if (!commentt) {
             return res.status(400).json({ msg: "No comment found" })
         }
-        await Comment.findByIdAndUpdate(commentID, {
+        const newcomment = await Comment.findByIdAndUpdate(commentID, {
             comment: comment
         });
         await commentt.save();
-        res.status(200).json({ msg: "Comment updated" })
+        res.status(200).json({ msg: "Comment updated", newcomment: newcomment })
 
     }
     catch (error) {
