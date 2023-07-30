@@ -51,8 +51,9 @@ const userSchema = new mongoose.Schema(
             minlength: [8, 'Password must be at least 8 characters long'],
 
         },
-
-
+        followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+        following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+        posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     },
     { timestamps: true }
 )
@@ -79,6 +80,7 @@ userSchema.pre('save', function (next) {
         next();
     })
 })
+
 
 userSchema.pre('remove', async function (next) {
     const user = this;

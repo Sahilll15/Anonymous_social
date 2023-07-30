@@ -134,6 +134,45 @@ const userProfile = async (req, res) => {
 };
 
 
+const userFollowUnfollow = async (req, res) => {
+    const { followUserID } = req.params;
+    try {
+        const user = req.user._id;
+        const followUser = await User.findById(followUserID)
+        if (!followUser) {
+            return res.status(404).json({ msg: "No user with this ID" });
+        }
+        const currentUser = await User.findById(user);
+        if (!currentUser) {
+            return res.status(404).json({ msg: "No user with this ID" });
+        }
+
+        const isFollowing = currentUser.following.includes(followUserID);
+        if (isFollowing) {
+            currentUser.following.pull(followUserID);
+            followUser.followers.pull(user);
+            res.send('')
+        } else {
+            currentUser.following.push(followUserID);
+            followUser.followers.push(user);
+        }
+        await currentUser.save();
+        await followUser.save();
+
+        if (isFollowing) {
+            res.status(200).json({ msg: 'unfollowed' });
+        } else {
+            res.status(200).json({ msg: 'followed' });
+        }
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+        console.log(error);
+
+    }
+}
+
+
 
 
 module.exports = {
@@ -141,5 +180,7 @@ module.exports = {
     loginUser,
     updateavatar,
     userInfo,
-    userProfile
+    userProfile,
+    userFollowUnfollow
+
 }
