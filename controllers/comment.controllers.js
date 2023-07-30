@@ -76,6 +76,13 @@ const deleteComment = async (req, res) => {
             return res.status(401).json({ msg: "You are not authorized to delete this comment" })
         }
 
+        const post = await Post.findById(comment.postId);
+        if (!post) {
+            return res.status(400).json({ msg: "No post found" })
+        }
+        post.comments.pull(commentID);
+        await post.save();
+
         await Comment.findByIdAndDelete(commentID);
         res.status(200).json({ msg: "Comment deleted" })
 
