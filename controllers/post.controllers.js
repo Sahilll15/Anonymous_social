@@ -70,10 +70,15 @@ const deletePost = async (req, res) => {
 
     try {
         const post = await Post.findById(id);
+        const user = req.user._id;
+
         if (!post) {
             res.status(200).json({ mssg: 'no post with this id' });
         }
 
+        if (post.author.id.toString() !== user.toString()) {
+            return res.status(401).json({ mssg: "you are not authorized to delete this post" })
+        }
         const deletePost = await Post.findByIdAndDelete(id);
 
         res.status(200).json({ mssg: "post deleted succes" })
@@ -83,6 +88,35 @@ const deletePost = async (req, res) => {
         console.log(error);
 
     }
+}
+
+const updatePost = async (req, res) => {
+    const { id } = req.params;
+    const { content } = req.body;
+    try {
+        const post = await Post.findById(id);
+        const user = req.user._id;
+
+        if (!post) {
+            res.status(200).json({ mssg: 'no post with this id' });
+        }
+
+        if (post.author.id.toString() !== user.toString()) {
+            return res.status(401).json({ mssg: "you are not authorized to delete this post" })
+        }
+
+        post.content = content;
+
+        await post.save();
+
+        res.status(200).json({ post: post, mssg: "post updated succesfully" })
+
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+        console.log(error);
+
+    }
+
 }
 
 
@@ -111,5 +145,6 @@ module.exports = {
     getPosts,
     getPostById,
     deletePost,
-    getPostByUserId
+    getPostByUserId,
+    updatePost
 }
