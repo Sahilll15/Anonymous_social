@@ -151,7 +151,6 @@ const userFollowUnfollow = async (req, res) => {
         if (isFollowing) {
             currentUser.following.pull(followUserID);
             followUser.followers.pull(user);
-            res.send('')
         } else {
             currentUser.following.push(followUserID);
             followUser.followers.push(user);
