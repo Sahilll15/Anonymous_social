@@ -80,7 +80,7 @@ const deleteComment = async (req, res) => {
         if (!post) {
             return res.status(400).json({ msg: "No post found" })
         }
-        post.comments.pull(commentID);
+        post.comments.pull(req.user._id);
         await post.save();
 
         await Comment.findByIdAndDelete(commentID);
