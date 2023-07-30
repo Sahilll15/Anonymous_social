@@ -75,6 +75,7 @@ const deleteComment = async (req, res) => {
         if (comment.commentedBy.id.toString() !== req.user._id.toString()) {
             return res.status(401).json({ msg: "You are not authorized to delete this comment" })
         }
+
         await Comment.findByIdAndDelete(commentID);
         res.status(200).json({ msg: "Comment deleted" })
 
@@ -93,6 +94,11 @@ const updateComment = async (req, res) => {
         const commentt = await Comment.findById(commentID);
         if (!commentt) {
             return res.status(400).json({ msg: "No comment found" })
+        }
+
+        //check if the req.user is the one who creatde the comment
+        if (commentt.commentedBy.id.toString() !== req.user._id.toString()) {
+            return res.status(401).json({ msg: "You are not authorized to update this comment" })
         }
         const newcomment = await Comment.findByIdAndUpdate(commentID, {
             comment: comment
