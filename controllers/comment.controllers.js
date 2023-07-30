@@ -86,7 +86,7 @@ const updateComment = async (req, res) => {
     const { commentID } = req.params;
     const { comment } = req.body;
     try {
-        const commentt = await Comment.findById({ commentID });
+        const commentt = await Comment.findById(commentID);
         if (!commentt) {
             return res.status(400).json({ msg: "No comment found" })
         }
