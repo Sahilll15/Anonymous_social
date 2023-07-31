@@ -44,7 +44,11 @@ const userSchema = new mongoose.Schema(
             index: true,
 
         },
+        bio: {
+            type: String,
+            default: "No Bio"
 
+        },
         password: {
             type: String,
             required: [true, 'Password is required'],
