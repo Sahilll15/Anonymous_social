@@ -149,10 +149,23 @@ const savedPost = async (req, res) => {
         const post = await Post.findById(postID);
         const user = req.user._id;
 
-        post.savedBy.push(user);
-        await post.save()
+        if (!post) {
+            return res.status(400).json({ mssg: "post not found" })
+        }
 
-        res.status(200).json({ mssg: "post saved succesfully", post: post })
+        //check if the user has already saved the post
+        const isSaved = post.savedBy.includes(user);
+        //if yes then remove the user from the saved post
+        if (isSaved) {
+            post.savedBy.pull(user);
+            await post.save();
+            return res.status(200).json({ mssg: "post unsaved succesfully", post: post })
+        } else {
+            post.savedBy.push(user);
+            await post.save()
+            res.status(200).json({ mssg: "post saved succesfully", post: post })
+        }
+
 
     } catch (error) {
 
