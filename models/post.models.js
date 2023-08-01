@@ -29,7 +29,14 @@ const postSchema = mongoose.Schema({
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
-    }]
+    }],
+    savedBy: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
+        }
+    ]
+
 }, { timestamps: true });
 
 const Post = mongoose.model("Post", postSchema);

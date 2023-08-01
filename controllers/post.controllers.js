@@ -143,11 +143,49 @@ const getPostByUserId = async (req, res) => {
 };
 
 
+const savedPost = async (req, res) => {
+    const { postID } = req.params;
+    try {
+        const post = await Post.findById(postID);
+        const user = req.user._id;
+
+        post.savedBy.push(user);
+        await post.save()
+
+        res.status(200).json({ mssg: "post saved succesfully", post: post })
+
+    } catch (error) {
+
+        res.status(500).json({ error: error });
+        console.log(error)
+    }
+}
+
+const getSavedPost = async (req, res) => {
+    try {
+        const userID = req.user._id;
+
+        const post = await Post.find({ savedBy: userID });
+
+        if (!post) {
+            return res.status(401).json({ "mssg": "you have not saved the post" })
+        }
+        res.status(200).json({ mssg: "saved post fetched succesfully!! ", savedPost: post })
+
+    } catch (error) {
+        res.status(500).json({ mssg: "Savedpost fetched failed!!" })
+        console.log("Error in getting Savedposts ", error)
+    }
+}
+
+
 module.exports = {
     createPost,
     getPosts,
     getPostById,
     deletePost,
     getPostByUserId,
-    updatePost
+    updatePost,
+    savedPost,
+    getSavedPost
 }
